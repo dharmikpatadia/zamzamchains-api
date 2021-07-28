@@ -164,8 +164,8 @@ public class MonthEndRepository {
 					balance > 0 ? Double.parseDouble(df.format(0)) : -Double.parseDouble(df.format(balance)));
 			credit.setTotalFineWeight(
 					balance > 0 ? Double.parseDouble(df.format(balance)) : Double.parseDouble(df.format(0)));
-			debit.setId(lastEntryCredit.getId() + 1);
-			credit.setId(lastEntryDebit.getId()+1);
+			debit.setId(lastEntryDebit.getId() + 1);
+			credit.setId(lastEntryCredit.getId()+1);
 			debit.setBalance(Double.parseDouble(df.format(balance)));
 			credit.setBalance(Double.parseDouble(df.format(balance)));
 			mongo.insert(debit, tableNameCredit);

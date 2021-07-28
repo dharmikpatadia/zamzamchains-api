@@ -77,15 +77,17 @@ public class DefaultDebitRepository {
 				lastEntryDebit = listDebit.get(0);
 			}
 
-			double balance = lastEntryDebit.getTotalFineWeight() - lastEntryCredit.getTotalFineWeight() - fineweight;
+			double balance = lastEntryDebit.getTotalFineWeight() - lastEntryCredit.getTotalFineWeight() + fineweight;
 
-			debit.setTotalFineWeight(Double.parseDouble(df.format(lastEntryCredit.getTotalFineWeight() + fineweight)));
+			debit.setTotalFineWeight(Double.parseDouble(df.format(lastEntryDebit.getTotalFineWeight() + fineweight)));
+			
+			debit.setTotalGrossWeight(Double.parseDouble(df.format(lastEntryDebit.getTotalGrossWeight() + grossweight)));
 
-			debit.setId(lastEntryCredit.getId() + 1);
+			debit.setId(lastEntryDebit.getId() + 1);
 
 			debit.setBalance(Double.parseDouble(df.format(balance)));
 
-			mongo.insert(debit, tableNameCredit);
+			mongo.insert(debit, tableNameDebit);
 
 			return new CreditDebitResponse(fineweight);
 		} catch (Exception e) {

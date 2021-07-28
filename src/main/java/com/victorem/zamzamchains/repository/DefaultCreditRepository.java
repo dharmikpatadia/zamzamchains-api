@@ -38,7 +38,7 @@ public class DefaultCreditRepository {
 			Date date = null;
 			try {
 				date = new SimpleDateFormat("dd/MM/yyyy").parse(creditSupport.getDate());
-				logger.info("Date Debit : " + date);
+				logger.info("Date Credit : " + date);
 			} catch (ParseException e) {
 				logger.info("Error - " + e.getMessage());
 				e.printStackTrace();
@@ -84,15 +84,17 @@ public class DefaultCreditRepository {
 				lastEntryDebit = listDebit.get(0);
 			}
 
-			double balance = lastEntryDebit.getTotalFineWeight() - lastEntryCredit.getTotalFineWeight() + fineWeight;
+			double balance = lastEntryDebit.getTotalFineWeight() - lastEntryCredit.getTotalFineWeight() - fineWeight;
 
-			credit.setTotalFineWeight(Double.parseDouble(df.format(lastEntryDebit.getTotalFineWeight() + fineWeight)));
-			credit.setId(lastEntryDebit.getId() + 1);
+			credit.setTotalFineWeight(Double.parseDouble(df.format(lastEntryCredit.getTotalFineWeight() + fineWeight)));
+			credit.setTotalGrossWeight(Double.parseDouble(df.format(lastEntryCredit.getTotalGrossWeight() + grossweight)));
+			credit.setId(lastEntryCredit.getId() + 1);
 			credit.setBalance(Double.parseDouble(df.format(balance)));
-			mongo.insert(credit, tableNameDebit);
+			mongo.insert(credit, tableNameCredit);
 
 			return new CreditDebitResponse(fineWeight);
 		} catch (Exception e) {
+			logger.info(e);
 			return null;
 		}
 	}

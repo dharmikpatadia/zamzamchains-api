@@ -66,11 +66,11 @@ public class DeleteRepository {
 			
 			if (multiDeleteSupport.getType().equals("Credit")) {
 				query.addCriteria(Criteria.where("date").gte(startDate).lte(toDate).andOperator(
-						Criteria.where("goldInfo").ne("balance").andOperator(Criteria.where("goldInfo").ne("initial"))));
+						Criteria.where("chainName").ne("balance").andOperator(Criteria.where("chainName").ne("initial"))));
 				mongo.findAllAndRemove(query, Credit.class, tableName);
 			} else {
 				query.addCriteria(Criteria.where("date").gte(startDate).lte(toDate).andOperator(
-						Criteria.where("chainName").ne("balance").andOperator(Criteria.where("chainName").ne("initial"))));
+						Criteria.where("goldInfo").ne("balance").andOperator(Criteria.where("goldInfo").ne("initial"))));
 				mongo.findAllAndRemove(query, Debit.class, tableName);
 			}
 			
