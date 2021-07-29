@@ -5,7 +5,7 @@ import java.util.Date;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-public class GetTransactionResponse {
+public class GetCreditTransactionResponse {
 	private String clientName;
 	private String chainName;
 	private double touch;
