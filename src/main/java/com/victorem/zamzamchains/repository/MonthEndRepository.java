@@ -168,8 +168,8 @@ public class MonthEndRepository {
 			credit.setId(lastEntryCredit.getId()+1);
 			debit.setBalance(Double.parseDouble(df.format(balance)));
 			credit.setBalance(Double.parseDouble(df.format(balance)));
-			mongo.insert(debit, tableNameCredit);
-			mongo.insert(credit,tableNameDebit);
+			mongo.insert(debit, tableNameDebit);
+			mongo.insert(credit,tableNameCredit);
 
 			return true;
 		} catch (Exception e) {
