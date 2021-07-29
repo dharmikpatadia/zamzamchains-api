@@ -23,7 +23,7 @@ import com.victorem.zamzamchains.retail.model.LastEntry;
 import com.victorem.zamzamchains.retail.repository.RetailMonthEndRepository;
 
 @RestController
-@RequestMapping("/api/v1.0")
+@RequestMapping("/api/v1.0/retail")
 public class RetailMonthEndAPI {
 
 	final static Logger logger = LogManager.getLogger(RetailMonthEndAPI.class);

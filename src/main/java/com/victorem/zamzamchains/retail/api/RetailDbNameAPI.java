@@ -22,7 +22,7 @@ import com.victorem.zamzamchains.retail.repository.RetailClientDetailRepository;
 import com.victorem.zamzamchains.retail.service.RetailDbNameService;
 
 @RestController
-@RequestMapping("/api/v1.0")
+@RequestMapping("/api/v1.0/retail")
 public class RetailDbNameAPI {
 
 	final static Logger logger = LogManager.getLogger(RetailDbNameAPI.class);

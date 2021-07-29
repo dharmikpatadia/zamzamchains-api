@@ -18,7 +18,7 @@ import com.victorem.zamzamchains.retail.repository.DeleteRetailRepository;
 
 
 @RestController
-@RequestMapping("/api/v1.0")
+@RequestMapping("/api/v1.0/retail")
 public class RetailDeleteAPI {
 
 	final static Logger logger = LogManager.getLogger(RetailDeleteAPI.class);
