@@ -161,9 +161,9 @@ public class MonthEndRepository {
 			double balance = lastEntryDebit.getTotalFineWeight() - lastEntryCredit.getTotalFineWeight();
 
 			debit.setTotalFineWeight(
-					balance > 0 ? Double.parseDouble(df.format(0)) : -Double.parseDouble(df.format(balance)));
+					balance < 0 ? Double.parseDouble(df.format(0)) : Double.parseDouble(df.format(balance)));
 			credit.setTotalFineWeight(
-					balance > 0 ? Double.parseDouble(df.format(balance)) : Double.parseDouble(df.format(0)));
+					balance < 0 ? -Double.parseDouble(df.format(balance)) : Double.parseDouble(df.format(0)));
 			debit.setId(lastEntryDebit.getId() + 1);
 			credit.setId(lastEntryCredit.getId()+1);
 			debit.setBalance(Double.parseDouble(df.format(balance)));
