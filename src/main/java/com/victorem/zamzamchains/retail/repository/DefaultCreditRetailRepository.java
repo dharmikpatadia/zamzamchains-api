@@ -65,8 +65,8 @@ public class DefaultCreditRetailRepository {
 			credit.setTouch(touch);
 			credit.setYourTouch(yourTouch);
 
-			String tableNameDebit = creditSupport.getClientName() + "_Debit_Retail";
-			String tableNameCredit = creditSupport.getClientName() + "_Credit_Retail";
+			String tableNameDebit = creditSupport.getClientName().replaceAll("\\s", "").toLowerCase() + "_Debit_Retail";
+			String tableNameCredit = creditSupport.getClientName().replaceAll("\\s", "").toLowerCase() + "_Credit_Retail";
 
 			Query query = new Query();
 			query.limit(1);
