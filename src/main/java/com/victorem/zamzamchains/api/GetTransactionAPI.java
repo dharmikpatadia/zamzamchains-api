@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.victorem.zamzamchains.api.support.GetTransactionResponse;
+import com.victorem.zamzamchains.api.support.GetCreditTransactionResponse;
+import com.victorem.zamzamchains.api.support.GetDebitTransactionResponse;
+import com.victorem.zamzamchains.api.support.GetMonthsTransactionResponse;
+import com.victorem.zamzamchains.api.support.GetMonthsTransactionSupport;
 import com.victorem.zamzamchains.api.support.GetTransactionSupport;
-import com.victorem.zamzamchains.document.Credit;
 import com.victorem.zamzamchains.service.GetTransactionService;
 
 @RestController
@@ -29,12 +31,38 @@ public class GetTransactionAPI {
 	private GetTransactionService getTransactionService;
 	
 	@PostMapping("/getTodaysCredit")
-	public ResponseEntity<List<GetTransactionResponse>> getTodaysCreditRecords(@RequestBody GetTransactionSupport getTransactionSupport,
+	public ResponseEntity<List<GetCreditTransactionResponse>> getTodaysCreditRecords(@RequestBody GetTransactionSupport getTransactionSupport,
 			HttpServletRequest request) {
 		logger.info("Print Credit IP : " + request.getRemoteAddr());
-		List<GetTransactionResponse> listCredit = null;
+		List<GetCreditTransactionResponse> listCredit = null;
 		try {
 			listCredit = getTransactionService.getTodaysCreditRecords(getTransactionSupport);
+			return new ResponseEntity<>(listCredit, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(listCredit, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PostMapping("/getTodaysDebit")
+	public ResponseEntity<List<GetDebitTransactionResponse>> getTodaysDebitRecords(@RequestBody GetTransactionSupport getTransactionSupport,
+			HttpServletRequest request) {
+		logger.info("Print Credit IP : " + request.getRemoteAddr());
+		List<GetDebitTransactionResponse> listDebit = null;
+		try {
+			listDebit = getTransactionService.getTodaysDebitRecords(getTransactionSupport);
+			return new ResponseEntity<>(listDebit, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(listDebit, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PostMapping("/getMonthsTransaction")
+	public ResponseEntity<List<GetMonthsTransactionResponse>> getMonthsTransactionRecords(@RequestBody GetMonthsTransactionSupport getTransactionSupport,
+			HttpServletRequest request) {
+		logger.info("Print Credit IP : " + request.getRemoteAddr());
+		List<GetMonthsTransactionResponse> listCredit = null;
+		try {
+			listCredit = getTransactionService.getMonthsTransactionRecords(getTransactionSupport);
 			return new ResponseEntity<>(listCredit, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(listCredit, HttpStatus.INTERNAL_SERVER_ERROR);
