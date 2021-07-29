@@ -19,19 +19,19 @@ import com.victorem.zamzamchains.retail.document.RetailClientDetail;
 import com.victorem.zamzamchains.retail.model.AddClient;
 import com.victorem.zamzamchains.retail.repository.ChainNameRepository;
 import com.victorem.zamzamchains.retail.repository.RetailClientDetailRepository;
-import com.victorem.zamzamchains.retail.service.DbNameService;
+import com.victorem.zamzamchains.retail.service.RetailDbNameService;
 
 @RestController
 @RequestMapping("/api/v1.0")
-public class DbNameAPI {
+public class RetailDbNameAPI {
 
-	final static Logger logger = LogManager.getLogger(DbNameAPI.class);
+	final static Logger logger = LogManager.getLogger(RetailDbNameAPI.class);
 
 	@Autowired
 	private RetailClientDetailRepository repository;
 	
 	@Autowired
-	private DbNameService dbNameService;
+	private RetailDbNameService dbNameService;
 
 	@PostMapping("/getClients")
 	public List<RetailClientDetail> getUsers( HttpServletRequest request) {

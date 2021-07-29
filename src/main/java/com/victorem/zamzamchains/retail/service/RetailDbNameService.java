@@ -19,9 +19,9 @@ import com.victorem.zamzamchains.retail.repository.ChainNameRepository;
 import com.victorem.zamzamchains.retail.repository.RetailClientDetailRepository;
 
 @Service
-public class DbNameService {
+public class RetailDbNameService {
 
-	final static Logger logger = LogManager.getLogger(DbNameService.class);
+	final static Logger logger = LogManager.getLogger(RetailDbNameService.class);
 
 	@Autowired
 	private RetailClientDetailRepository repository;

@@ -14,16 +14,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.victorem.zamzamchains.retail.api.support.CreditDebitResponse;
 import com.victorem.zamzamchains.retail.api.support.CreditSupport;
-import com.victorem.zamzamchains.retail.repository.DefaultCreditRepository;
+import com.victorem.zamzamchains.retail.repository.DefaultCreditRetailRepository;
 
 @RestController
 @RequestMapping("/api/v1.0/retail")
-public class CreditAPI {
+public class RetailCreditAPI {
 
-	final static Logger logger = LogManager.getLogger(CreditAPI.class);
+	final static Logger logger = LogManager.getLogger(RetailCreditAPI.class);
 	
 	@Autowired
-	private DefaultCreditRepository repository;
+	private DefaultCreditRetailRepository repository;
 
 	@PostMapping("/credit")
 	public ResponseEntity<CreditDebitResponse> addRecord(@RequestBody CreditSupport creditSupport,

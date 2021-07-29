@@ -18,9 +18,9 @@ import com.victorem.zamzamchains.retail.document.Credit;
 import com.victorem.zamzamchains.retail.document.Debit;
 
 @Repository
-public class DeleteRepository {
+public class DeleteRetailRepository {
 
-	final static Logger logger = LogManager.getLogger(DeleteRepository.class);
+	final static Logger logger = LogManager.getLogger(DeleteRetailRepository.class);
 
 	@Autowired
 	private MongoOperations mongo;

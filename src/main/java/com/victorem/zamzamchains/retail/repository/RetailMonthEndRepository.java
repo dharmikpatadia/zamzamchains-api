@@ -23,9 +23,9 @@ import com.victorem.zamzamchains.retail.document.Debit;
 import com.victorem.zamzamchains.retail.model.LastEntry;
 
 @Repository
-public class MonthEndRepository {
+public class RetailMonthEndRepository {
 
-	final static Logger logger = LogManager.getLogger(MonthEndRepository.class);
+	final static Logger logger = LogManager.getLogger(RetailMonthEndRepository.class);
 
 	final static DecimalFormat df = new DecimalFormat("###.###");
 

@@ -14,17 +14,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.victorem.zamzamchains.retail.api.support.DeleteMultipleSupport;
 import com.victorem.zamzamchains.retail.api.support.DeleteSingleSupport;
-import com.victorem.zamzamchains.retail.repository.DeleteRepository;
+import com.victorem.zamzamchains.retail.repository.DeleteRetailRepository;
 
 
 @RestController
 @RequestMapping("/api/v1.0")
-public class DeleteAPI {
+public class RetailDeleteAPI {
 
-	final static Logger logger = LogManager.getLogger(DeleteAPI.class);
+	final static Logger logger = LogManager.getLogger(RetailDeleteAPI.class);
 
 	@Autowired
-	private DeleteRepository repository;
+	private DeleteRetailRepository repository;
 	
 	@PostMapping("/deleteSingle")
 	public ResponseEntity<String> removeRecord(@RequestBody DeleteSingleSupport deleteSupport, HttpServletRequest request) {

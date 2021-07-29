@@ -20,16 +20,16 @@ import com.victorem.zamzamchains.retail.api.support.PrintSupport;
 import com.victorem.zamzamchains.retail.document.Credit;
 import com.victorem.zamzamchains.retail.document.Debit;
 import com.victorem.zamzamchains.retail.model.LastEntry;
-import com.victorem.zamzamchains.retail.repository.MonthEndRepository;
+import com.victorem.zamzamchains.retail.repository.RetailMonthEndRepository;
 
 @RestController
 @RequestMapping("/api/v1.0")
-public class MonthEndAPI {
+public class RetailMonthEndAPI {
 
-	final static Logger logger = LogManager.getLogger(MonthEndAPI.class);
+	final static Logger logger = LogManager.getLogger(RetailMonthEndAPI.class);
 
 	@Autowired
-	private MonthEndRepository repository;
+	private RetailMonthEndRepository repository;
 
 	@PostMapping("/checkBalance")
 	public ResponseEntity<LastEntry> getBalance(@RequestBody GetLastEntrySupport printSupport,

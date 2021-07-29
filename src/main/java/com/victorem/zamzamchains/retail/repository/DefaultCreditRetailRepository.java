@@ -22,9 +22,9 @@ import com.victorem.zamzamchains.retail.document.Debit;
 import com.victorem.zamzamchains.retail.document.RetailClientDetail;
 
 @Repository
-public class DefaultCreditRepository {
+public class DefaultCreditRetailRepository {
 
-	final static Logger logger = LogManager.getLogger(DefaultCreditRepository.class);
+	final static Logger logger = LogManager.getLogger(DefaultCreditRetailRepository.class);
 
 	final static DecimalFormat df = new DecimalFormat("###.###");
 
