@@ -28,7 +28,7 @@ public class DeleteRetailRepository {
 	public boolean deleteSingleRecord(DeleteSingleSupport deleteSupport) {
 
 		Query query = new Query();
-		String tableName = deleteSupport.getClientName() + "_" + deleteSupport.getType()+"_Retil";
+		String tableName = deleteSupport.getClientName() + "_" + deleteSupport.getType()+"_Retail";
 		query.addCriteria(Criteria.where("_id").is(deleteSupport.getId()));
 		if (deleteSupport.getType().equals("Chain")) {
 			Chain DeletedRecord = mongo.findAndRemove(query, Chain.class, tableName);
