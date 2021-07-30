@@ -52,8 +52,8 @@ public class RetailMonthEndRepository {
 			
 			LastEntry lastEntry=new LastEntry();
 			
-			lastEntry.setCreditTotalFineWeight(lastEntryCredit.getTotalFineWeight());
-			lastEntry.setDebitTotalFineWeight(lastEntryDebit.getTotalFineWeight());
+			lastEntry.setCreditTotalFineWeight(listCredit.size()==0?0:lastEntryCredit.getTotalFineWeight());
+			lastEntry.setDebitTotalFineWeight(listDebit.size()==0?0:lastEntryDebit.getTotalFineWeight());
 
 			return lastEntry;
 		} catch (Exception e) {

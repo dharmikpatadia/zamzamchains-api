@@ -111,14 +111,18 @@ public class DefaultChainRetailRepository {
 		String retailClientValue = creditSupport.getClientName().replaceAll("\\s", "").toLowerCase();
 		List<RetailClientDetail> retailClientList = repository.findAll();
 		boolean duplicate = false;
+		RetailClientDetail exsistingClient=new RetailClientDetail();
 		for (RetailClientDetail eachClient : retailClientList) {
 			if (retailClientValue.equals(eachClient.getValue())) {
 				duplicate = true;
+				exsistingClient=eachClient;
 				break;
 			}
 		}
 
 		if (duplicate) {
+			exsistingClient.setNumber(creditSupport.getNumber());
+			repository.save(exsistingClient);
 			logger.info("Duplicate");
 		} else {
 			RetailClientDetail retailClientDetail = new RetailClientDetail();
