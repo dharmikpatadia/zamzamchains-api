@@ -83,8 +83,8 @@ public class RetailDbNameService {
 				}
 			}
 			try {
-				mongo.dropCollection(value + "_Credit_Retail");
-				mongo.dropCollection(value + "_Debit_Retail");
+				mongo.dropCollection(value + "_Chain_Retail");
+				mongo.dropCollection(value + "_Fine_Retail");
 			} catch (Exception e) {
 				duplicate = false;
 			}
