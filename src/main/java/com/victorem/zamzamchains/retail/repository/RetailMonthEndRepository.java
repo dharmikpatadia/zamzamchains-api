@@ -46,22 +46,24 @@ public class RetailMonthEndRepository {
 			query.with(Sort.by(Sort.Direction.DESC, "_id"));
 
 			List<Chain> listCredit = new ArrayList<>();
+			Chain lastEntryCredit=new Chain();
 			try {
 				listCredit = mongo.find(query, Chain.class, tableNameCredit);
+				lastEntryCredit = listCredit.get(0);
 			} catch (Exception e) {
 
 			}
 			
-			Chain lastEntryCredit = listCredit.get(0);
 
 			List<Fine> listDebit = new ArrayList<>();
+			Fine lastEntryDebit=new Fine();
 			try {
 				mongo.find(query, Fine.class, tableNameDebit);
+				lastEntryDebit = listDebit.get(0);
 			} catch (Exception e) {
 
 			}
 			
-			Fine lastEntryDebit = listDebit.get(0);
 
 			LastEntry lastEntry = new LastEntry();
 
