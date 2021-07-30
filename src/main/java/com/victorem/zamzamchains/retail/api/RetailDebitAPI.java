@@ -17,7 +17,7 @@ import com.victorem.zamzamchains.retail.api.support.DebitSupport;
 import com.victorem.zamzamchains.retail.repository.DefaultDebitRetailRepository;
 
 @RestController
-@RequestMapping("/api/v1.0")
+@RequestMapping("/api/v1.0/retail")
 public class RetailDebitAPI {
 
 	final static Logger logger = LogManager.getLogger(RetailDbNameAPI.class);
