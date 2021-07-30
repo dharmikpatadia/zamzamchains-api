@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.victorem.zamzamchains.retail.api.support.CreditDebitResponse;
-import com.victorem.zamzamchains.retail.api.support.DebitSupport;
-import com.victorem.zamzamchains.retail.repository.DefaultDebitRetailRepository;
+import com.victorem.zamzamchains.retail.api.support.ChainSupport;
+import com.victorem.zamzamchains.retail.repository.DefaultChainRetailRepository;
 
 @RestController
 @RequestMapping("/api/v1.0/retail")
@@ -23,15 +23,15 @@ public class RetailDebitAPI {
 	final static Logger logger = LogManager.getLogger(RetailDbNameAPI.class);
 	
 	@Autowired
-	private DefaultDebitRetailRepository repository;
+	private DefaultChainRetailRepository repository;
 
 	@PostMapping("/debit")
-	public ResponseEntity<CreditDebitResponse> addRecord(@RequestBody DebitSupport debitSupport,
+	public ResponseEntity<CreditDebitResponse> addRecord(@RequestBody ChainSupport debitSupport,
 			HttpServletRequest request) {
 		logger.info("ADD Debit IP : " + request.getRemoteAddr());
 		CreditDebitResponse response = null;
 		try {
-			response = repository.addDebitRecord(debitSupport);
+			response = repository.addChainRecord(debitSupport);
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);

@@ -18,8 +18,8 @@ import org.springframework.stereotype.Repository;
 import com.victorem.zamzamchains.retail.api.support.AddBalanceSupport;
 import com.victorem.zamzamchains.retail.api.support.GetLastEntrySupport;
 import com.victorem.zamzamchains.retail.api.support.PrintSupport;
-import com.victorem.zamzamchains.retail.document.Credit;
-import com.victorem.zamzamchains.retail.document.Debit;
+import com.victorem.zamzamchains.retail.document.Chain;
+import com.victorem.zamzamchains.retail.document.Fine;
 import com.victorem.zamzamchains.retail.model.LastEntry;
 
 @Repository
@@ -44,11 +44,11 @@ public class RetailMonthEndRepository {
 			query.limit(1);
 			query.with(Sort.by(Sort.Direction.DESC, "_id"));
 
-			List<Credit> listCredit = mongo.find(query, Credit.class, tableNameCredit);
-			Credit lastEntryCredit = listCredit.get(0);
+			List<Chain> listCredit = mongo.find(query, Chain.class, tableNameCredit);
+			Chain lastEntryCredit = listCredit.get(0);
 
-			List<Debit> listDebit = mongo.find(query, Debit.class, tableNameDebit);
-			Debit lastEntryDebit = listDebit.get(0);
+			List<Fine> listDebit = mongo.find(query, Fine.class, tableNameDebit);
+			Fine lastEntryDebit = listDebit.get(0);
 			
 			LastEntry lastEntry=new LastEntry();
 			
@@ -61,7 +61,7 @@ public class RetailMonthEndRepository {
 		}
 	}
 
-	public List<Credit> getCreditPrint(PrintSupport printSupport) {
+	public List<Chain> getCreditPrint(PrintSupport printSupport) {
 
 		try {
 			String tableNameCredit = printSupport.getClientName() + "_Credit_Retail";
@@ -78,14 +78,14 @@ public class RetailMonthEndRepository {
 				e.printStackTrace();
 			}
 			query.addCriteria(Criteria.where("date").gte(startDate).lte(toDate));
-			List<Credit> listCredit = mongo.find(query, Credit.class, tableNameCredit);
+			List<Chain> listCredit = mongo.find(query, Chain.class, tableNameCredit);
 			return listCredit;
 		} catch (Exception e) {
 			return null;
 		}
 	}
 
-	public List<Debit> getDebitPrint(PrintSupport printSupport) {
+	public List<Fine> getDebitPrint(PrintSupport printSupport) {
 
 		try {
 			String tableNameDebit = printSupport.getClientName() + "_Debit_Retail";
@@ -102,7 +102,7 @@ public class RetailMonthEndRepository {
 				e.printStackTrace();
 			}
 			query.addCriteria(Criteria.where("date").gte(startDate).lte(toDate));
-			List<Debit> listDebit = mongo.find(query, Debit.class, tableNameDebit);
+			List<Fine> listDebit = mongo.find(query, Fine.class, tableNameDebit);
 			return listDebit;
 		} catch (Exception e) {
 			return null;
@@ -111,8 +111,8 @@ public class RetailMonthEndRepository {
 
 	public boolean balanceEntry(AddBalanceSupport balanceSupport) {
 		try {
-			Debit debit = new Debit();
-			Credit credit = new Credit();
+			Fine debit = new Fine();
+			Chain credit = new Chain();
 			credit.setChainName("balance");
 			debit.setGoldInfo("balance");
 			Date date = null;
@@ -139,8 +139,8 @@ public class RetailMonthEndRepository {
 			query.limit(1);
 			query.with(Sort.by(Sort.Direction.DESC, "_id"));
 
-			List<Credit> listCredit = mongo.find(query, Credit.class, tableNameCredit);
-			Credit lastEntryCredit = new Credit();
+			List<Chain> listCredit = mongo.find(query, Chain.class, tableNameCredit);
+			Chain lastEntryCredit = new Chain();
 			if (listCredit.size() <= 0) {
 				lastEntryCredit.setTotalFineWeight(0);
 				lastEntryCredit.setId(0);
@@ -148,8 +148,8 @@ public class RetailMonthEndRepository {
 				lastEntryCredit = listCredit.get(0);
 			}
 
-			List<Debit> listDebit = mongo.find(query, Debit.class, tableNameDebit);
-			Debit lastEntryDebit = new Debit();
+			List<Fine> listDebit = mongo.find(query, Fine.class, tableNameDebit);
+			Fine lastEntryDebit = new Fine();
 
 			if (listDebit.size() <= 0) {
 				lastEntryDebit.setTotalFineWeight(0);

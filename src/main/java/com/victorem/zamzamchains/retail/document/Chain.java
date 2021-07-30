@@ -7,16 +7,17 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document
-public class Debit {
-
+public class Chain {
 	@Id
 	private int _id;
 	@Field
-	private String goldInfo;
+	private String chainName;
+	@Field
+	private double touch;
 	@Field
 	private double grossWeight;
 	@Field
-	private double purityTouch;
+	private double yourTouch;
 	@Field
 	private double fineWeight;
 	@Field
@@ -27,17 +28,18 @@ public class Debit {
 	private double balance;
 	@Field
 	private Date date;
-	public int getId() {
-		return _id;
+	
+	public String getChainName() {
+		return chainName;
 	}
-	public void setId(int _id) {
-		this._id = _id;
+	public void setChainName(String chainName) {
+		this.chainName = chainName;
 	}
-	public String getGoldInfo() {
-		return goldInfo;
+	public double getTouch() {
+		return touch;
 	}
-	public void setGoldInfo(String goldInfo) {
-		this.goldInfo = goldInfo;
+	public void setTouch(double touch) {
+		this.touch = touch;
 	}
 	public double getGrossWeight() {
 		return grossWeight;
@@ -45,11 +47,11 @@ public class Debit {
 	public void setGrossWeight(double grossWeight) {
 		this.grossWeight = grossWeight;
 	}
-	public double getPurityTouch() {
-		return purityTouch;
+	public double getYourTouch() {
+		return yourTouch;
 	}
-	public void setPurityTouch(double purityTouch) {
-		this.purityTouch = purityTouch;
+	public void setYourTouch(double yourTouch) {
+		this.yourTouch = yourTouch;
 	}
 	public double getFineWeight() {
 		return fineWeight;
@@ -81,6 +83,11 @@ public class Debit {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	
+	public int getId() {
+		return this._id;
+	}
+	public void setId(int _id) {
+		this._id = _id;
+	}
 	
 }

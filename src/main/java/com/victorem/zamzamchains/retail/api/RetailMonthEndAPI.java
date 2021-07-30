@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.victorem.zamzamchains.retail.api.support.AddBalanceSupport;
 import com.victorem.zamzamchains.retail.api.support.GetLastEntrySupport;
 import com.victorem.zamzamchains.retail.api.support.PrintSupport;
-import com.victorem.zamzamchains.retail.document.Credit;
-import com.victorem.zamzamchains.retail.document.Debit;
+import com.victorem.zamzamchains.retail.document.Chain;
+import com.victorem.zamzamchains.retail.document.Fine;
 import com.victorem.zamzamchains.retail.model.LastEntry;
 import com.victorem.zamzamchains.retail.repository.RetailMonthEndRepository;
 
@@ -45,10 +45,10 @@ public class RetailMonthEndAPI {
 	}
 
 	@PostMapping("/printCredit")
-	public ResponseEntity<List<Credit>> getCreditRecords(@RequestBody PrintSupport printSupport,
+	public ResponseEntity<List<Chain>> getCreditRecords(@RequestBody PrintSupport printSupport,
 			HttpServletRequest request) {
 		logger.info("Print Credit IP : " + request.getRemoteAddr());
-		List<Credit> listCredit = null;
+		List<Chain> listCredit = null;
 		try {
 			listCredit = repository.getCreditPrint(printSupport);
 			return new ResponseEntity<>(listCredit, HttpStatus.OK);
@@ -58,10 +58,10 @@ public class RetailMonthEndAPI {
 	}
 
 	@PostMapping("/printDebit")
-	public ResponseEntity<List<Debit>> getDebitRecords(@RequestBody PrintSupport printSupport,
+	public ResponseEntity<List<Fine>> getDebitRecords(@RequestBody PrintSupport printSupport,
 			HttpServletRequest request) {
 		logger.info("Print Debit IP : " + request.getRemoteAddr());
-		List<Debit> listDebit = null;
+		List<Fine> listDebit = null;
 		try {
 			listDebit = repository.getDebitPrint(printSupport);
 			return new ResponseEntity<>(listDebit, HttpStatus.OK);

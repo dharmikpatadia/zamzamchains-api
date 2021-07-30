@@ -1,6 +1,6 @@
 package com.victorem.zamzamchains.retail.api.support;
 
-public class DebitSupport {
+public class FineSupport {
 
 	private String clientName;
 	private String goldInfo;

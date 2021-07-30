@@ -14,8 +14,8 @@ import org.springframework.stereotype.Repository;
 
 import com.victorem.zamzamchains.retail.api.support.DeleteMultipleSupport;
 import com.victorem.zamzamchains.retail.api.support.DeleteSingleSupport;
-import com.victorem.zamzamchains.retail.document.Credit;
-import com.victorem.zamzamchains.retail.document.Debit;
+import com.victorem.zamzamchains.retail.document.Chain;
+import com.victorem.zamzamchains.retail.document.Fine;
 
 @Repository
 public class DeleteRetailRepository {
@@ -31,14 +31,14 @@ public class DeleteRetailRepository {
 		String tableName = deleteSupport.getClientName() + "_" + deleteSupport.getType();
 		query.addCriteria(Criteria.where("_id").is(deleteSupport.getId()));
 		if (deleteSupport.getType().equals("Credit")) {
-			Credit DeletedRecord = mongo.findAndRemove(query, Credit.class, tableName);
+			Chain DeletedRecord = mongo.findAndRemove(query, Chain.class, tableName);
 			if (DeletedRecord.getId() == deleteSupport.getId()) {
 				return true;
 			} else {
 				return false;
 			}
 		} else {
-			Debit DeletedRecord = mongo.findAndRemove(query, Debit.class, tableName);
+			Fine DeletedRecord = mongo.findAndRemove(query, Fine.class, tableName);
 			if (DeletedRecord.getId() == deleteSupport.getId()) {
 				return true;
 			} else {
@@ -67,11 +67,11 @@ public class DeleteRetailRepository {
 			if (multiDeleteSupport.getType().equals("Credit")) {
 				query.addCriteria(Criteria.where("date").gte(startDate).lte(toDate).andOperator(
 						Criteria.where("chainName").ne("balance").andOperator(Criteria.where("chainName").ne("initial"))));
-				mongo.findAllAndRemove(query, Credit.class, tableName);
+				mongo.findAllAndRemove(query, Chain.class, tableName);
 			} else {
 				query.addCriteria(Criteria.where("date").gte(startDate).lte(toDate).andOperator(
 						Criteria.where("goldInfo").ne("balance").andOperator(Criteria.where("goldInfo").ne("initial"))));
-				mongo.findAllAndRemove(query, Debit.class, tableName);
+				mongo.findAllAndRemove(query, Fine.class, tableName);
 			}
 			
 			

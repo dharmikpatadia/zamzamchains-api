@@ -1,6 +1,6 @@
 package com.victorem.zamzamchains.retail.api.support;
 
-public class CreditSupport {
+public class ChainSupport {
 
 	private String clientName;
 	private String chainName;

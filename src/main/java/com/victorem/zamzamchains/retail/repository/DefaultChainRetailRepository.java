@@ -16,15 +16,15 @@ import org.springframework.stereotype.Repository;
 
 import com.victorem.zamzamchains.factory.document.ClientDetail;
 import com.victorem.zamzamchains.retail.api.support.CreditDebitResponse;
-import com.victorem.zamzamchains.retail.api.support.CreditSupport;
-import com.victorem.zamzamchains.retail.document.Credit;
-import com.victorem.zamzamchains.retail.document.Debit;
+import com.victorem.zamzamchains.retail.api.support.ChainSupport;
+import com.victorem.zamzamchains.retail.document.Chain;
+import com.victorem.zamzamchains.retail.document.Fine;
 import com.victorem.zamzamchains.retail.document.RetailClientDetail;
 
 @Repository
-public class DefaultCreditRetailRepository {
+public class DefaultChainRetailRepository {
 
-	final static Logger logger = LogManager.getLogger(DefaultCreditRetailRepository.class);
+	final static Logger logger = LogManager.getLogger(DefaultChainRetailRepository.class);
 
 	final static DecimalFormat df = new DecimalFormat("###.###");
 
@@ -36,12 +36,12 @@ public class DefaultCreditRetailRepository {
 	@Autowired
 	private MongoOperations mongo;
 
-	public CreditDebitResponse addCreditRecord(CreditSupport creditSupport) {
+	public CreditDebitResponse addChainRecord(ChainSupport creditSupport) {
 		try {
 			checkExsistingClient(creditSupport);
 
-			Credit credit = new Credit();
-			credit.setChainName(creditSupport.getChainName());
+			Chain chain = new Chain();
+			chain.setChainName(creditSupport.getChainName());
 			Date date = null;
 			try {
 				date = new SimpleDateFormat("dd/MM/yyyy").parse(creditSupport.getDate());
@@ -50,7 +50,7 @@ public class DefaultCreditRetailRepository {
 				logger.info("Error - " + e.getMessage());
 				e.printStackTrace();
 			}
-			credit.setDate(date);
+			chain.setDate(date);
 
 			double grossweight = Double.parseDouble(df.format(creditSupport.getGrossWeight()));
 
@@ -60,20 +60,20 @@ public class DefaultCreditRetailRepository {
 
 			double fineWeight = Double.parseDouble(df.format(grossweight * (touch + yourTouch) / 100));
 
-			credit.setFineWeight(fineWeight);
-			credit.setGrossWeight(grossweight);
-			credit.setTouch(touch);
-			credit.setYourTouch(yourTouch);
+			chain.setFineWeight(fineWeight);
+			chain.setGrossWeight(grossweight);
+			chain.setTouch(touch);
+			chain.setYourTouch(yourTouch);
 
-			String tableNameDebit = creditSupport.getClientName().replaceAll("\\s", "").toLowerCase() + "_Debit_Retail";
-			String tableNameCredit = creditSupport.getClientName().replaceAll("\\s", "").toLowerCase() + "_Credit_Retail";
+			String tableNameFine = creditSupport.getClientName().replaceAll("\\s", "").toLowerCase() + "_Fine_Retail";
+			String tableNameChain = creditSupport.getClientName().replaceAll("\\s", "").toLowerCase() + "_Chain_Retail";
 
 			Query query = new Query();
 			query.limit(1);
 			query.with(Sort.by(Sort.Direction.DESC, "_id"));
 
-			List<Credit> listCredit = mongo.find(query, Credit.class, tableNameCredit);
-			Credit lastEntryCredit = new Credit();
+			List<Chain> listCredit = mongo.find(query, Chain.class, tableNameChain);
+			Chain lastEntryCredit = new Chain();
 			if (listCredit.size() <= 0) {
 				lastEntryCredit.setTotalFineWeight(0);
 				lastEntryCredit.setId(0);
@@ -81,8 +81,8 @@ public class DefaultCreditRetailRepository {
 				lastEntryCredit = listCredit.get(0);
 			}
 
-			List<Debit> listDebit = mongo.find(query, Debit.class, tableNameDebit);
-			Debit lastEntryDebit = new Debit();
+			List<Fine> listDebit = mongo.find(query, Fine.class, tableNameFine);
+			Fine lastEntryDebit = new Fine();
 
 			if (listDebit.size() <= 0) {
 				lastEntryDebit.setTotalFineWeight(0);
@@ -91,14 +91,14 @@ public class DefaultCreditRetailRepository {
 				lastEntryDebit = listDebit.get(0);
 			}
 
-			double balance = lastEntryDebit.getTotalFineWeight() - lastEntryCredit.getTotalFineWeight() - fineWeight;
+			double balance = lastEntryCredit.getTotalFineWeight() - lastEntryDebit.getTotalFineWeight() + fineWeight;
 
-			credit.setTotalFineWeight(Double.parseDouble(df.format(lastEntryCredit.getTotalFineWeight() + fineWeight)));
-			credit.setTotalGrossWeight(
+			chain.setTotalFineWeight(Double.parseDouble(df.format(lastEntryCredit.getTotalFineWeight() + fineWeight)));
+			chain.setTotalGrossWeight(
 					Double.parseDouble(df.format(lastEntryCredit.getTotalGrossWeight() + grossweight)));
-			credit.setId(lastEntryCredit.getId() + 1);
-			credit.setBalance(Double.parseDouble(df.format(balance)));
-			mongo.insert(credit, tableNameCredit);
+			chain.setId(lastEntryCredit.getId() + 1);
+			chain.setBalance(Double.parseDouble(df.format(balance)));
+			mongo.insert(chain, tableNameChain);
 
 			return new CreditDebitResponse(fineWeight);
 		} catch (Exception e) {
@@ -107,7 +107,7 @@ public class DefaultCreditRetailRepository {
 		}
 	}
 
-	private void checkExsistingClient(CreditSupport creditSupport) {
+	private void checkExsistingClient(ChainSupport creditSupport) {
 		String retailClientValue = creditSupport.getClientName().replaceAll("\\s", "").toLowerCase();
 		List<RetailClientDetail> retailClientList = repository.findAll();
 		boolean duplicate = false;

@@ -15,14 +15,14 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import com.victorem.zamzamchains.retail.api.support.CreditDebitResponse;
-import com.victorem.zamzamchains.retail.api.support.DebitSupport;
-import com.victorem.zamzamchains.retail.document.Credit;
-import com.victorem.zamzamchains.retail.document.Debit;
+import com.victorem.zamzamchains.retail.api.support.FineSupport;
+import com.victorem.zamzamchains.retail.document.Chain;
+import com.victorem.zamzamchains.retail.document.Fine;
 
 @Repository
-public class DefaultDebitRetailRepository {
+public class DefaultFineRetailRepository {
 
-	final static Logger logger = LogManager.getLogger(DefaultDebitRetailRepository.class);
+	final static Logger logger = LogManager.getLogger(DefaultFineRetailRepository.class);
 
 	final static DecimalFormat df = new DecimalFormat("###.###");
 
@@ -31,10 +31,10 @@ public class DefaultDebitRetailRepository {
 	@Autowired
 	private MongoOperations mongo;	
 
-	public CreditDebitResponse addDebitRecord(DebitSupport debitSupport) {
+	public CreditDebitResponse addFineRecord(FineSupport debitSupport) {
 		try {
-			Debit debit = new Debit();
-			debit.setGoldInfo(debitSupport.getGoldInfo());
+			Fine fine = new Fine();
+			fine.setGoldInfo(debitSupport.getGoldInfo());
 			Date date = null;
 			try {
 				date = new SimpleDateFormat("dd/MM/yyyy").parse(debitSupport.getDate());
@@ -42,24 +42,24 @@ public class DefaultDebitRetailRepository {
 				logger.info("Error - " + e.getMessage());
 				e.printStackTrace();
 			}
-			debit.setDate(date);
+			fine.setDate(date);
 			double grossweight = Double.parseDouble(df.format(debitSupport.getGrossWeight()));
 			double purityTouch = Double.parseDouble(touchDf.format(debitSupport.getPurityTouch()));
-			debit.setGrossWeight(grossweight);
-			debit.setPurityTouch(purityTouch);
+			fine.setGrossWeight(grossweight);
+			fine.setPurityTouch(purityTouch);
 
 			double fineweight = Double.parseDouble(df.format(grossweight * purityTouch / 100));
-			debit.setFineWeight(fineweight);
+			fine.setFineWeight(fineweight);
 
-			String tableNameCredit = debitSupport.getClientName() + "_Credit_Retail";
-			String tableNameDebit = debitSupport.getClientName() + "_Debit_Retail";
+			String tableNameChain = debitSupport.getClientName() + "_Chain_Retail";
+			String tableNameFine = debitSupport.getClientName() + "_Fine_Retail";
 
 			Query query = new Query();
 			query.limit(1);
 			query.with(Sort.by(Sort.Direction.DESC, "_id"));
 
-			List<Credit> listCredit = mongo.find(query, Credit.class, tableNameCredit);
-			Credit lastEntryCredit = new Credit();
+			List<Chain> listCredit = mongo.find(query, Chain.class, tableNameChain);
+			Chain lastEntryCredit = new Chain();
 			if (listCredit.size() <= 0) {
 				lastEntryCredit.setTotalFineWeight(0);
 				lastEntryCredit.setId(0);
@@ -67,8 +67,8 @@ public class DefaultDebitRetailRepository {
 				lastEntryCredit = listCredit.get(0);
 			}
 
-			List<Debit> listDebit = mongo.find(query, Debit.class, tableNameDebit);
-			Debit lastEntryDebit = new Debit();
+			List<Fine> listDebit = mongo.find(query, Fine.class, tableNameFine);
+			Fine lastEntryDebit = new Fine();
 
 			if (listDebit.size() <= 0) {
 				lastEntryDebit.setTotalFineWeight(0);
@@ -77,17 +77,17 @@ public class DefaultDebitRetailRepository {
 				lastEntryDebit = listDebit.get(0);
 			}
 
-			double balance = lastEntryDebit.getTotalFineWeight() - lastEntryCredit.getTotalFineWeight() + fineweight;
+			double balance = lastEntryCredit.getTotalFineWeight() -lastEntryDebit.getTotalFineWeight() - fineweight;
 
-			debit.setTotalFineWeight(Double.parseDouble(df.format(lastEntryDebit.getTotalFineWeight() + fineweight)));
+			fine.setTotalFineWeight(Double.parseDouble(df.format(lastEntryDebit.getTotalFineWeight() + fineweight)));
 			
-			debit.setTotalGrossWeight(Double.parseDouble(df.format(lastEntryDebit.getTotalGrossWeight() + grossweight)));
+			fine.setTotalGrossWeight(Double.parseDouble(df.format(lastEntryDebit.getTotalGrossWeight() + grossweight)));
 
-			debit.setId(lastEntryDebit.getId() + 1);
+			fine.setId(lastEntryDebit.getId() + 1);
 
-			debit.setBalance(Double.parseDouble(df.format(balance)));
+			fine.setBalance(Double.parseDouble(df.format(balance)));
 
-			mongo.insert(debit, tableNameDebit);
+			mongo.insert(fine, tableNameFine);
 
 			return new CreditDebitResponse(fineweight);
 		} catch (Exception e) {
