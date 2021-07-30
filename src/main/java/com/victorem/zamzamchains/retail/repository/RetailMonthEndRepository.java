@@ -58,7 +58,7 @@ public class RetailMonthEndRepository {
 			List<Fine> listDebit = new ArrayList<>();
 			Fine lastEntryDebit=new Fine();
 			try {
-				mongo.find(query, Fine.class, tableNameDebit);
+				listDebit=mongo.find(query, Fine.class, tableNameDebit);
 				lastEntryDebit = listDebit.get(0);
 			} catch (Exception e) {
 
