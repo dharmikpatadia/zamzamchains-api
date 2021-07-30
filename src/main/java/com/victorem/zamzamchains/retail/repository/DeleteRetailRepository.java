@@ -28,9 +28,9 @@ public class DeleteRetailRepository {
 	public boolean deleteSingleRecord(DeleteSingleSupport deleteSupport) {
 
 		Query query = new Query();
-		String tableName = deleteSupport.getClientName() + "_" + deleteSupport.getType();
+		String tableName = deleteSupport.getClientName() + "_" + deleteSupport.getType()+"_Retil";
 		query.addCriteria(Criteria.where("_id").is(deleteSupport.getId()));
-		if (deleteSupport.getType().equals("Credit")) {
+		if (deleteSupport.getType().equals("Chain")) {
 			Chain DeletedRecord = mongo.findAndRemove(query, Chain.class, tableName);
 			if (DeletedRecord.getId() == deleteSupport.getId()) {
 				return true;
@@ -50,7 +50,7 @@ public class DeleteRetailRepository {
 
 	public boolean deleteMultipleRecord(DeleteMultipleSupport multiDeleteSupport) {
 		try {
-			String tableName = multiDeleteSupport.getClientName() + "_" + multiDeleteSupport.getType();
+			String tableName = multiDeleteSupport.getClientName() + "_" + multiDeleteSupport.getType()+"_Retail";
 			Query query = new Query();
 			Date startDate = null;
 			Date toDate = null;
@@ -64,7 +64,7 @@ public class DeleteRetailRepository {
 				e.printStackTrace();
 			}
 			
-			if (multiDeleteSupport.getType().equals("Credit")) {
+			if (multiDeleteSupport.getType().equals("Chain")) {
 				query.addCriteria(Criteria.where("date").gte(startDate).lte(toDate).andOperator(
 						Criteria.where("chainName").ne("balance").andOperator(Criteria.where("chainName").ne("initial"))));
 				mongo.findAllAndRemove(query, Chain.class, tableName);

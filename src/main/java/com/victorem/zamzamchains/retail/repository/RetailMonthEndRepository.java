@@ -37,8 +37,8 @@ public class RetailMonthEndRepository {
 	public LastEntry getLastEntry(GetLastEntrySupport getLastSupport) {
 		try {
 
-			String tableNameCredit = getLastSupport.getClientName() + "_Credit_Retail";
-			String tableNameDebit = getLastSupport.getClientName() + "_Debit_Retail";
+			String tableNameCredit = getLastSupport.getClientName() + "_Chain_Retail";
+			String tableNameDebit = getLastSupport.getClientName() + "_Fine_Retail";
 
 			Query query = new Query();
 			query.limit(1);
@@ -64,7 +64,7 @@ public class RetailMonthEndRepository {
 	public List<Chain> getCreditPrint(PrintSupport printSupport) {
 
 		try {
-			String tableNameCredit = printSupport.getClientName() + "_Credit_Retail";
+			String tableNameCredit = printSupport.getClientName() + "_Chain_Retail";
 			Query query = new Query();
 			Date startDate = null;
 			Date toDate = null;
@@ -88,7 +88,7 @@ public class RetailMonthEndRepository {
 	public List<Fine> getDebitPrint(PrintSupport printSupport) {
 
 		try {
-			String tableNameDebit = printSupport.getClientName() + "_Debit_Retail";
+			String tableNameDebit = printSupport.getClientName() + "_Fine_Retail";
 			Query query = new Query();
 			Date startDate = null;
 			Date toDate = null;
