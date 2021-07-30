@@ -3,6 +3,7 @@ package com.victorem.zamzamchains.retail.repository;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -44,16 +45,28 @@ public class RetailMonthEndRepository {
 			query.limit(1);
 			query.with(Sort.by(Sort.Direction.DESC, "_id"));
 
-			List<Chain> listCredit = mongo.find(query, Chain.class, tableNameCredit);
+			List<Chain> listCredit = new ArrayList<>();
+			try {
+				listCredit = mongo.find(query, Chain.class, tableNameCredit);
+			} catch (Exception e) {
+
+			}
+			
 			Chain lastEntryCredit = listCredit.get(0);
 
-			List<Fine> listDebit = mongo.find(query, Fine.class, tableNameDebit);
+			List<Fine> listDebit = new ArrayList<>();
+			try {
+				mongo.find(query, Fine.class, tableNameDebit);
+			} catch (Exception e) {
+
+			}
+			
 			Fine lastEntryDebit = listDebit.get(0);
-			
-			LastEntry lastEntry=new LastEntry();
-			
-			lastEntry.setCreditTotalFineWeight(listCredit.size()==0?0:lastEntryCredit.getTotalFineWeight());
-			lastEntry.setDebitTotalFineWeight(listDebit.size()==0?0:lastEntryDebit.getTotalFineWeight());
+
+			LastEntry lastEntry = new LastEntry();
+
+			lastEntry.setCreditTotalFineWeight(listCredit.size() == 0 ? 0 : lastEntryCredit.getTotalFineWeight());
+			lastEntry.setDebitTotalFineWeight(listDebit.size() == 0 ? 0 : lastEntryDebit.getTotalFineWeight());
 
 			return lastEntry;
 		} catch (Exception e) {
@@ -165,11 +178,11 @@ public class RetailMonthEndRepository {
 			credit.setTotalFineWeight(
 					balance < 0 ? -Double.parseDouble(df.format(balance)) : Double.parseDouble(df.format(0)));
 			debit.setId(lastEntryDebit.getId() + 1);
-			credit.setId(lastEntryCredit.getId()+1);
+			credit.setId(lastEntryCredit.getId() + 1);
 			debit.setBalance(Double.parseDouble(df.format(balance)));
 			credit.setBalance(Double.parseDouble(df.format(balance)));
 			mongo.insert(debit, tableNameDebit);
-			mongo.insert(credit,tableNameCredit);
+			mongo.insert(credit, tableNameCredit);
 
 			return true;
 		} catch (Exception e) {
