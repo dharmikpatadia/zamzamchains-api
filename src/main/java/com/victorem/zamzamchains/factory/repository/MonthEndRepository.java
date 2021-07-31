@@ -3,6 +3,7 @@ package com.victorem.zamzamchains.factory.repository;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -43,17 +44,30 @@ public class MonthEndRepository {
 			Query query = new Query();
 			query.limit(1);
 			query.with(Sort.by(Sort.Direction.DESC, "_id"));
+			
+			List<Credit> listCredit = new ArrayList<>();
+			Credit lastEntryCredit=new Credit();
+			try {
+				listCredit = mongo.find(query, Credit.class, tableNameCredit);
+				lastEntryCredit = listCredit.get(0);
+			} catch (Exception e) {
 
-			List<Credit> listCredit = mongo.find(query, Credit.class, tableNameCredit);
-			Credit lastEntryCredit = listCredit.get(0);
+			}
+			
 
-			List<Debit> listDebit = mongo.find(query, Debit.class, tableNameDebit);
-			Debit lastEntryDebit = listDebit.get(0);
+			List<Debit> listDebit = new ArrayList<>();
+			Debit lastEntryDebit=new Debit();
+			try {
+				listDebit=mongo.find(query, Debit.class, tableNameDebit);
+				lastEntryDebit = listDebit.get(0);
+			} catch (Exception e) {
+
+			}
 			
 			LastEntry lastEntry=new LastEntry();
 			
-			lastEntry.setCreditTotalFineWeight(lastEntryCredit.getTotalFineWeight());
-			lastEntry.setDebitTotalFineWeight(lastEntryDebit.getTotalFineWeight());
+			lastEntry.setCreditTotalFineWeight(listCredit.size() == 0 ? 0 :lastEntryCredit.getTotalFineWeight());
+			lastEntry.setDebitTotalFineWeight(listDebit.size() == 0 ? 0 :lastEntryDebit.getTotalFineWeight());
 
 			return lastEntry;
 		} catch (Exception e) {
